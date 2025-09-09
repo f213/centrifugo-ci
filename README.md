@@ -4,7 +4,7 @@ Convenience [Centrifugo](https://centrifugal.dev/) image to run on the dev machi
 
 ## Usage
 
-### Docker Compose
+### compose.yml
 
 ```yaml
 centrifugo:
@@ -16,7 +16,7 @@ centrifugo:
     - 6080:6080
 ```
 
-### Docker Run
+### Docker run
 
 ```bash
 docker run -d \
