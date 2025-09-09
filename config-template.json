@@ -1,0 +1,36 @@
+{
+  "client": {
+    "token": {
+      "hmac_secret_key": "{{ .Env.CENTRIFUGO_SECRET }}",
+      "user_id_claim": "user_id"
+    },
+    "allowed_origins": [
+      "http://localhost:3000",
+      "{{ .Env.CENTRIFUGO_ALLOWED_ORIGIN }}"
+    ],
+    "subscribe_to_user_personal_channel": {
+      "enabled": true,
+      "personal_channel_namespace": "personal"
+    }
+  },
+  "channel": {
+    "namespaces": [
+      {
+        "name": "personal",
+        "presence": true,
+        "allow_user_limited_channels": true
+      },
+      {
+        "name": "public"
+      }
+    ]
+  },
+  "admin": {
+    "enabled": true,
+    "password": "{{ .Env.CENTRIFUGO_ADMIN_PASSWORD }}",
+    "secret": "{{ .Env.CENTRIFUGO_SECRET }}"
+  },
+  "http_api": {
+    "key": "{{ .Env.CENTRIFUGO_SECRET }}"
+  }
+}
