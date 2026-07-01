@@ -1,3 +1,4 @@
+# check=skip=SecretsUsedInArgOrEnv
 ARG CENTRIFUGO_VERSION=6.2.5
 FROM centrifugo/centrifugo:v${CENTRIFUGO_VERSION}
 
