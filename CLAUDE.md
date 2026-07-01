@@ -20,7 +20,7 @@ There is no test suite, linter, or package manager — `docker build` is the onl
 `entrypoint.sh` does two things before starting Centrifugo:
 
 1. Runs `gomplate` over `config-template.json` → `/centrifugo/config.json`, substituting `{{ .Env.X }}` references.
-2. **Unsets** the ad-hoc `CENTRIFUGO_*` vars used by this wrapper (`CENTRIFUGO_SECRET`, `CENTRIFUGO_ALLOWED_ORIGIN`, `CENTRIFUGO_ADMIN_PASSWORD`, `CENTRIFUGO_PERSONAL_NAMESPACE`, `CENTRIFUGO_ADDITIONAL_PERSONAL_NAMESPACES`) before `exec centrifugo`. Centrifugo itself treats `CENTRIFUGO_*` env vars as config overrides and would misinterpret or warn about these ad-hoc names.
+2. **Unsets** the ad-hoc `CENTRIFUGO_*` vars used by this wrapper (`CENTRIFUGO_SECRET`, `CENTRIFUGO_ALLOWED_ORIGINS`, `CENTRIFUGO_ADMIN_PASSWORD`, `CENTRIFUGO_PERSONAL_NAMESPACE`, `CENTRIFUGO_ADDITIONAL_PERSONAL_NAMESPACES`) before `exec centrifugo`. Centrifugo itself treats `CENTRIFUGO_*` env vars as config overrides and would misinterpret or warn about these ad-hoc names.
 
 **Implication:** adding a new templated env var requires *both* a `{{ .Env.X }}` reference in `config-template.json` *and* a matching `unset X` in `entrypoint.sh`.
 
@@ -28,7 +28,7 @@ There is no test suite, linter, or package manager — `docker build` is the onl
 
 - **Channel namespaces:** one static personal namespace (name from `CENTRIFUGO_PERSONAL_NAMESPACE`, default `personal`, with `presence` + `allow_user_limited_channels`, and used as the auto-subscribe target for Centrifugo's `subscribe_to_user_personal_channel` feature), zero or more extra personal-style namespaces (names from `CENTRIFUGO_ADDITIONAL_PERSONAL_NAMESPACES`, comma-separated, default empty, same properties, no auto-subscribe), and `public`. Renaming the static namespace changes both the channel entry and the auto-subscribe target together.
 - **Token auth:** HMAC with `user_id` as the user ID claim.
-- **Allowed origins:** hardcoded `http://localhost:3000` plus whatever `CENTRIFUGO_ALLOWED_ORIGIN` resolves to. Supporting more than one extra origin requires editing `config-template.json`.
+- **Allowed origins:** comma-separated list from `CENTRIFUGO_ALLOWED_ORIGINS` (default `http://localhost:3000`). Setting the var replaces the default entirely — no origins are hardcoded in the template.
 - **HTTP port:** `6080` (set via `CENTRIFUGO_HTTP_SERVER_PORT` in the Dockerfile).
 
 ## Release / versioning

@@ -5,8 +5,15 @@
       "user_id_claim": "user_id"
     },
     "allowed_origins": [
-      "http://localhost:3000",
-      "{{ .Env.CENTRIFUGO_ALLOWED_ORIGIN }}"
+      {{- $first := true }}
+      {{- range (getenv "CENTRIFUGO_ALLOWED_ORIGINS" "" | strings.Split ",") }}
+      {{- $origin := strings.TrimSpace . }}
+      {{- if ne $origin "" }}
+      {{- if not $first }},{{ end }}
+      "{{ $origin }}"
+      {{- $first = false }}
+      {{- end }}
+      {{- end }}
     ],
     "subscribe_to_user_personal_channel": {
       "enabled": true,
