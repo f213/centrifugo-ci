@@ -6,7 +6,17 @@ on:
       - master
 
 jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate config template
+        run: make validate
+
   build:
+    needs: validate
     runs-on: ubuntu-latest
     strategy:
       matrix:
