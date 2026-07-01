@@ -10,16 +10,26 @@
     ],
     "subscribe_to_user_personal_channel": {
       "enabled": true,
-      "personal_channel_namespace": "personal"
+      "personal_channel_namespace": "{{ .Env.CENTRIFUGO_PERSONAL_NAMESPACE }}"
     }
   },
   "channel": {
     "namespaces": [
       {
-        "name": "personal",
+        "name": "{{ .Env.CENTRIFUGO_PERSONAL_NAMESPACE }}",
         "presence": true,
         "allow_user_limited_channels": true
-      },
+      }
+      {{- range (getenv "CENTRIFUGO_ADDITIONAL_PERSONAL_NAMESPACES" "" | strings.Split ",") }}
+      {{- $ns := strings.TrimSpace . }}
+      {{- if ne $ns "" }},
+      {
+        "name": "{{ $ns }}",
+        "presence": true,
+        "allow_user_limited_channels": true
+      }
+      {{- end }}
+      {{- end }},
       {
         "name": "public"
       }

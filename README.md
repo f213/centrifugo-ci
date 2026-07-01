@@ -48,8 +48,26 @@ jobs:
           # Centrifugo is available at localhost:6080
 ```
 
+### Custom namespaces
+
+```yaml
+centrifugo:
+  image: ghcr.io/f213/centrifugo-ci
+  environment:
+    - CENTRIFUGO_SECRET=secret
+    - CENTRIFUGO_ADMIN_PASSWORD=password
+    - CENTRIFUGO_PERSONAL_NAMESPACE=user
+    - CENTRIFUGO_ADDITIONAL_PERSONAL_NAMESPACES=notifications,dm
+  ports:
+    - 6080:6080
+```
+
+The example above produces four channel namespaces: `user`, `notifications`, `dm`, `public`. Clients are auto-subscribed to `user#<user_id>`; `notifications` and `dm` behave the same way (presence + user-limited channels) but must be subscribed to explicitly.
+
 ## Configuration
 
 - `CENTRIFUGO_SECRET`: Secret key used for JWT, HTTP API and admin secret
 - `CENTRIFUGO_ADMIN_PASSWORD`: Admin panel password
+- `CENTRIFUGO_PERSONAL_NAMESPACE`: Name of the built-in personal channel namespace (also the auto-subscribe target). Default: `personal`
+- `CENTRIFUGO_ADDITIONAL_PERSONAL_NAMESPACES`: Comma-separated list of extra personal-style namespaces (each gets `presence` and `allow_user_limited_channels`). Default: empty
 - Port `6080`: Main server port

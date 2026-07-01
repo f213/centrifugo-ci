@@ -11,5 +11,7 @@ cat config-template.json | gomplate > /centrifugo/config.json
 unset CENTRIFUGO_SECRET
 unset CENTRIFUGO_ALLOWED_ORIGIN
 unset CENTRIFUGO_ADMIN_PASSWORD
+unset CENTRIFUGO_PERSONAL_NAMESPACE
+unset CENTRIFUGO_ADDITIONAL_PERSONAL_NAMESPACES
 
 centrifugo
