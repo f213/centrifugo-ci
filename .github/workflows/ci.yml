@@ -11,8 +11,9 @@ jobs:
     strategy:
       matrix:
         centrifugo_version:
-          - 6.2.5
-          - 6.3.0
+          - 6.8.4
+          - 6.7.2
+          - 6.6.2
 
     steps:
       - name: Checkout
